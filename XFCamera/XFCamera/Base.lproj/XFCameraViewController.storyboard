@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Camera View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="XFCameraViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMq-yi-xKB">
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="vMq-yi-xKB" secondAttribute="height" multiplier="131:104" id="1Np-ds-kIr"/>
+                                    <constraint firstAttribute="height" constant="80" id="ApN-Ik-bds"/>
+                                </constraints>
+                                <state key="normal" image="icon_camera_snap_unselected"/>
+                                <connections>
+                                    <action selector="takePhotoButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="izh-a0-ZiF"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JOp-qS-r8Z">
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="JOp-qS-r8Z" secondAttribute="height" multiplier="1:1" id="JHh-4d-XzJ"/>
+                                </constraints>
+                                <state key="normal" image="zhxf_barcode_cancel_normal"/>
+                                <connections>
+                                    <action selector="goBackButtonCLick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1Mo-46-Ash"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4cR-nC-vVS">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="54" id="kta-3g-S3W"/>
+                                    <constraint firstAttribute="height" constant="54" id="thx-43-eB8"/>
+                                </constraints>
+                                <state key="normal" image="qb_scan_btn_flash_nor_"/>
+                                <connections>
+                                    <action selector="flishLightButtonCLick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fUs-kB-e39"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="JOp-qS-r8Z" secondAttribute="bottom" constant="20" id="4OF-nR-Pxy"/>
+                            <constraint firstItem="4cR-nC-vVS" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="40" id="CUv-q3-eYU"/>
+                            <constraint firstItem="JOp-qS-r8Z" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="-40" id="KTu-t3-ui9"/>
+                            <constraint firstItem="4cR-nC-vVS" firstAttribute="width" secondItem="JOp-qS-r8Z" secondAttribute="width" id="NbS-25-zTo"/>
+                            <constraint firstItem="4cR-nC-vVS" firstAttribute="top" secondItem="vMq-yi-xKB" secondAttribute="bottom" constant="20" id="SWd-hh-dRA"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="4cR-nC-vVS" secondAttribute="bottom" constant="20" id="eNw-3K-I1f"/>
+                            <constraint firstItem="vMq-yi-xKB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="yR3-eK-C9L"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="103" y="113"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="icon_camera_snap_unselected" width="208" height="208"/>
+        <image name="qb_scan_btn_flash_nor_" width="80" height="83"/>
+        <image name="zhxf_barcode_cancel_normal" width="54" height="54"/>
+    </resources>
+</document>
