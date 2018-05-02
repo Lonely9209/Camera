@@ -20,10 +20,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
     UIStoryboard *sb = [UIStoryboard storyboardWithName:NSStringFromClass([XFCameraViewController class]) bundle:[NSBundle mainBundle]];
-    UIViewController *vc = [[UIViewController alloc] init];
-    UINavigationController *loginNav = [[UINavigationController alloc] initWithRootViewController:vc];
-    [loginNav pushViewController:sb.instantiateInitialViewController animated:NO];
-    self.window.rootViewController = loginNav;
+    self.window.rootViewController = sb.instantiateInitialViewController;
     return YES;
 }
 

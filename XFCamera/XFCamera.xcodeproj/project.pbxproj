@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01FA29DB20993E6B00261423 /* XFCameraPemission.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FA29D920993E6A00261423 /* XFCameraPemission.m */; };
 		78BCA1361DAF5FB900006DF7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCA1351DAF5FB900006DF7 /* main.m */; };
 		78BCA1391DAF5FB900006DF7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BCA1381DAF5FB900006DF7 /* AppDelegate.m */; };
 		78BCA13F1DAF5FB900006DF7 /* XFCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78BCA13D1DAF5FB900006DF7 /* XFCameraViewController.storyboard */; };
@@ -18,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01FA29D920993E6A00261423 /* XFCameraPemission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XFCameraPemission.m; sourceTree = "<group>"; };
+		01FA29DA20993E6A00261423 /* XFCameraPemission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFCameraPemission.h; sourceTree = "<group>"; };
 		78BCA1311DAF5FB900006DF7 /* XFCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XFCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78BCA1351DAF5FB900006DF7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		78BCA1371DAF5FB900006DF7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -68,6 +71,8 @@
 				78BFF7701DB0628100BDECB7 /* XFCameraViewController.h */,
 				78BFF7711DB0628100BDECB7 /* XFCameraViewController.m */,
 				78BCA13D1DAF5FB900006DF7 /* XFCameraViewController.storyboard */,
+				01FA29DA20993E6A00261423 /* XFCameraPemission.h */,
+				01FA29D920993E6A00261423 /* XFCameraPemission.m */,
 				78BCA14B1DAF711000006DF7 /* XFConfirmViewController.h */,
 				78BCA14C1DAF711000006DF7 /* XFConfirmViewController.m */,
 				78BCA14D1DAF711000006DF7 /* XFConfirmViewController.xib */,
@@ -162,6 +167,7 @@
 			files = (
 				78BCA1391DAF5FB900006DF7 /* AppDelegate.m in Sources */,
 				78BFF7721DB0628100BDECB7 /* XFCameraViewController.m in Sources */,
+				01FA29DB20993E6B00261423 /* XFCameraPemission.m in Sources */,
 				78BCA1361DAF5FB900006DF7 /* main.m in Sources */,
 				78BCA14E1DAF711000006DF7 /* XFConfirmViewController.m in Sources */,
 			);

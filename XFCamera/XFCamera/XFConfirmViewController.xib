@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,21 +20,23 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hYW-Vp-5vo"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hYW-Vp-5vo">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nz2-dH-bRz">
+                    <rect key="frame" x="20" y="613" width="37" height="34"/>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <state key="normal" title="返回">
-                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
                         <action selector="goback:" destination="-1" eventType="touchUpInside" id="0Pe-cl-YoS"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DAo-6y-mfy">
+                    <rect key="frame" x="318" y="613" width="37" height="34"/>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                    <state key="normal" title="确认">
-                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                    </state>
+                    <state key="normal" title="确认"/>
                     <connections>
                         <action selector="confirmButtonCLick:" destination="-1" eventType="touchUpInside" id="xiE-Db-QBf"/>
                     </connections>
@@ -40,14 +45,12 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="hYW-Vp-5vo" secondAttribute="trailing" id="8fg-pi-5zC"/>
-                <constraint firstAttribute="bottom" secondItem="hYW-Vp-5vo" secondAttribute="bottom" constant="50" id="Ehb-lK-AM6"/>
+                <constraint firstAttribute="bottom" secondItem="hYW-Vp-5vo" secondAttribute="bottom" id="Ehb-lK-AM6"/>
                 <constraint firstAttribute="trailing" secondItem="DAo-6y-mfy" secondAttribute="trailing" constant="20" id="JS3-dS-Ejw"/>
-                <constraint firstItem="DAo-6y-mfy" firstAttribute="top" secondItem="hYW-Vp-5vo" secondAttribute="bottom" id="Jf7-uZ-8LA"/>
-                <constraint firstItem="nz2-dH-bRz" firstAttribute="top" secondItem="hYW-Vp-5vo" secondAttribute="bottom" id="Wqo-zD-1Sb"/>
-                <constraint firstAttribute="bottom" secondItem="DAo-6y-mfy" secondAttribute="bottom" id="gCx-lK-xdK"/>
+                <constraint firstAttribute="bottom" secondItem="nz2-dH-bRz" secondAttribute="bottom" constant="20" id="hBz-Ru-fzr"/>
                 <constraint firstItem="nz2-dH-bRz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="kjM-Wd-9eQ"/>
                 <constraint firstItem="hYW-Vp-5vo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="p2R-eu-rt3"/>
-                <constraint firstAttribute="bottom" secondItem="nz2-dH-bRz" secondAttribute="bottom" id="vjS-xG-TFP"/>
+                <constraint firstItem="DAo-6y-mfy" firstAttribute="bottom" secondItem="nz2-dH-bRz" secondAttribute="bottom" id="sao-sb-nvQ"/>
                 <constraint firstItem="hYW-Vp-5vo" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="x5L-9I-Qe6"/>
             </constraints>
             <point key="canvasLocation" x="-145" y="80"/>

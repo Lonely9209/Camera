@@ -8,6 +8,7 @@
 
 #import "XFCameraViewController.h"
 #import "XFConfirmViewController.h"
+#import "XFCameraPemission.h"
 #import "UIImage+DJResize.h"
 
 #import <AVFoundation/AVFoundation.h>
@@ -15,12 +16,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define adjustingFocus @"adjustingFocus"
-
-typedef enum{
-    AutoFlash = 0,
-    CloseFlash,
-    OpenFlash
-} flashModel;
+#define CameraFlashModeKey @"flashMode"
 
 @interface XFCameraViewController ()
 < AVCaptureAudioDataOutputSampleBufferDelegate, UIImagePickerControllerDelegate, AVCaptureMetadataOutputObjectsDelegate>
@@ -31,24 +27,36 @@ typedef enum{
 @property (nonatomic) dispatch_queue_t sessionQueue;
 @property (nonatomic, strong) UIImageView *focusImageView;
 @property (nonatomic, assign) BOOL isManualFocus; //判断是否手动对焦
-
+@property (weak, nonatomic) IBOutlet UIButton *flashButton;
 @end
 
 @implementation XFCameraViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     if (![self.session isRunning]) {
-        [self.session startRunning];
+        self.isManualFocus = false;
+        [self startRunning];
     }
 }
-- (void)viewWillDisappear:(BOOL)animated
-{
+
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     if ([self.session isRunning]) {
         [self.session stopRunning];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [XFCameraPemission requestCameraPemissionWithResult:^(BOOL granted) {
+        if (!granted) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                NSLog(@"尚未开启相机权限,您可以去设置->隐私->相机开启");
+            });
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }];
 }
 
 - (void)viewDidLoad {
@@ -57,12 +65,8 @@ typedef enum{
     [self setupCamera];
 }
 
-
 /** 初始化相机 */
-- (void)setupCamera
-{
-    // 对焦队列
-    [self createQueue];
+- (void)setupCamera {
     // 添加输入设备
     [self addVideoInputFrontCamera:NO];
     // 添加输出设备
@@ -77,7 +81,7 @@ typedef enum{
     [preLayer setMasksToBounds:YES];
     [_previewLayer setFrame:self.view.bounds];
     [preLayer insertSublayer:_previewLayer atIndex:0];
-    [_session startRunning];
+    [self startRunning];
     
     // 加入对焦框
     [self initfocusImageWithParent:self.view];
@@ -89,24 +93,25 @@ typedef enum{
     }
 }
 
+- (void)startRunning {
+    dispatch_async(self.sessionQueue, ^{
+        [self.session startRunning];
+    });
+    NSNumber *flashMode = [[NSUserDefaults standardUserDefaults] objectForKey:CameraFlashModeKey];
+    [self setFlashMode:(flashMode ? [flashMode integerValue] : AVCaptureFlashModeAuto)];
+}
+
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     CGPoint point = [[touches anyObject] locationInView:self.view];
     [self focusInPoint:point];
 }
 
-/** 创建一个队列，防止阻塞主线程 */
-- (void)createQueue {
-    dispatch_queue_t sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
-    self.sessionQueue = sessionQueue;
-}
-
 /** 对焦的框 */
-- (void)initfocusImageWithParent:(UIView *)view;
-{
+- (void)initfocusImageWithParent:(UIView *)view {
     if (self.focusImageView) {
         return;
     }
-    self.focusImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"zhxf_scan"]];
+    self.focusImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"camera_touch_focus"]];
     CGRect frame = self.focusImageView.frame;
     frame.size = CGSizeMake(100, 100);
     self.focusImageView.frame = frame;
@@ -115,8 +120,7 @@ typedef enum{
 }
 
 /** 点击对焦 */
-- (void)focusInPoint:(CGPoint)devicePoint
-{
+- (void)focusInPoint:(CGPoint)devicePoint {
     if (CGRectContainsPoint(_previewLayer.bounds, devicePoint) == NO) {
         return;
     }
@@ -124,11 +128,9 @@ typedef enum{
     [self focusImageAnimateWithCenterPoint:devicePoint];
     devicePoint = [self convertToPointOfInterestFromViewCoordinates:devicePoint];
     [self focusWithMode:AVCaptureFocusModeAutoFocus exposeWithMode:AVCaptureExposureModeContinuousAutoExposure atDevicePoint:devicePoint monitorSubjectAreaChange:YES];
-    
 }
 
-- (void)focusImageAnimateWithCenterPoint:(CGPoint)point
-{
+- (void)focusImageAnimateWithCenterPoint:(CGPoint)point {
     [self.focusImageView setCenter:point];
     self.focusImageView.transform = CGAffineTransformMakeScale(2.0, 2.0);
     __weak typeof(self) weak = self;
@@ -139,35 +141,26 @@ typedef enum{
         [UIView animateWithDuration:0.5f delay:0.5f options:UIViewAnimationOptionAllowUserInteraction animations:^{
             weak.focusImageView.alpha = 0.f;
         } completion:^(BOOL finished) {
-            weak.isManualFocus = NO;
+            //            weak.isManualFocus = NO;
         }];
     }];
 }
 
-- (void)focusWithMode:(AVCaptureFocusMode)focusMode exposeWithMode:(AVCaptureExposureMode)exposureMode atDevicePoint:(CGPoint)point monitorSubjectAreaChange:(BOOL)monitorSubjectAreaChange
-{
-    
-    dispatch_async(_sessionQueue, ^{
+- (void)focusWithMode:(AVCaptureFocusMode)focusMode exposeWithMode:(AVCaptureExposureMode)exposureMode atDevicePoint:(CGPoint)point monitorSubjectAreaChange:(BOOL)monitorSubjectAreaChange {
+    dispatch_async(self.sessionQueue, ^{
         AVCaptureDevice *device = [self.inputDevice device];
         NSError *error = nil;
-        if ([device lockForConfiguration:&error])
-        {
-            if ([device isFocusPointOfInterestSupported] && [device isFocusModeSupported:focusMode])
-            {
-                [device setFocusMode:focusMode];
+        if ([device lockForConfiguration:&error]) {
+            if ([device isFocusPointOfInterestSupported] && [device isFocusModeSupported:focusMode]) {
                 [device setFocusPointOfInterest:point];
+                [device setFocusMode:focusMode];
             }
-            if ([device isExposurePointOfInterestSupported] && [device isExposureModeSupported:exposureMode])
-            {
-                [device setExposureMode:exposureMode];
+            if ([device isExposurePointOfInterestSupported] && [device isExposureModeSupported:exposureMode]) {
                 [device setExposurePointOfInterest:point];
+                [device setExposureMode:exposureMode];
             }
             [device setSubjectAreaChangeMonitoringEnabled:monitorSubjectAreaChange];
             [device unlockForConfiguration];
-        }
-        else
-        {
-            NSLog(@"%@", error);
         }
     });
 }
@@ -243,15 +236,10 @@ typedef enum{
 }
 
 /** 获取图片 */
-- (void)getPhoto
-{
+- (void)getPhoto {
     AVCaptureConnection *videoConnection = [self findVideoConnection];
     [_captureOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:^(CMSampleBufferRef imageSampleBuffer, NSError *error)
      {
-         CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, nil);
-         if (exifAttachments) {
-             // Do something with the attachments.
-         }
          // 获取图片数据
          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
          UIImage *t_image = [[UIImage alloc] initWithData:imageData];
@@ -264,8 +252,7 @@ typedef enum{
 }
 
 /** 查找摄像头连接设备 */
-- (AVCaptureConnection *)findVideoConnection
-{
+- (AVCaptureConnection *)findVideoConnection {
     AVCaptureConnection *videoConnection = nil;
     for (AVCaptureConnection *connection in _captureOutput.connections) {
         for (AVCaptureInputPort *port in [connection inputPorts]) {
@@ -296,31 +283,19 @@ typedef enum{
 
 /** 切换闪光灯模式 */
 - (IBAction)flishLightButtonCLick:(UIButton *)sender {
-    Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
-    if (!captureDeviceClass) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息" message:@"您的设备没有拍照功能" delegate:nil cancelButtonTitle:NSLocalizedString(@"Sure", nil) otherButtonTitles: nil];
-        [alert show];
-        return;
-    }
-    NSString *imgName = @"qb_scan_btn_flash_nor_";
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    AVCaptureDevice *device = [self.inputDevice device];
     [device lockForConfiguration:nil];
     if ([device hasFlash]) {
-        if (device.flashMode == AVCaptureFlashModeOff) {
-            device.flashMode = AVCaptureFlashModeOn;
-            device.torchMode = AVCaptureTorchModeOn;
-            imgName = @"qb_scan_btn_scan_off_";
-        } else if (device.flashMode == AVCaptureFlashModeOn) {
-            device.flashMode = AVCaptureFlashModeAuto;
-            device.torchMode = AVCaptureTorchModeAuto;
-            imgName = @"qb_scan_btn_flash_down_";
-        } else if (device.flashMode == AVCaptureFlashModeAuto) {
-            device.flashMode = AVCaptureFlashModeOff;
-            device.torchMode = AVCaptureTorchModeOff;
-            imgName = @"qb_scan_btn_flash_nor_";
-        }
-        if (sender) {
-            [sender setImage:[UIImage imageNamed:imgName] forState:UIControlStateNormal];
+        switch (device.flashMode) {
+            case AVCaptureFlashModeOff:
+                [self setFlashMode:AVCaptureFlashModeAuto];
+                break;
+            case AVCaptureFlashModeAuto:
+                [self setFlashMode:AVCaptureFlashModeOn];
+                break;
+            default:
+                [self setFlashMode:AVCaptureFlashModeOff];
+                break;
         }
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息" message:@"您的设备没有闪光灯功能" delegate:nil cancelButtonTitle:@"ok" otherButtonTitles: nil];
@@ -328,6 +303,35 @@ typedef enum{
     }
     [device unlockForConfiguration];
 }
+
+- (void)setFlashMode:(AVCaptureFlashMode)flashMode {
+    NSString *imgName;
+    AVCaptureDevice *device = [self.inputDevice device];
+    if ([device lockForConfiguration:nil]) {
+        switch (flashMode) {
+            case AVCaptureFlashModeOff:
+                //                device.torchMode = AVCaptureTorchModeOff;
+                device.flashMode = AVCaptureFlashModeOff;
+                imgName = @"camera_flash_off";
+                break;
+            case AVCaptureFlashModeOn:
+                //                device.torchMode = AVCaptureTorchModeOn;
+                device.flashMode = AVCaptureFlashModeOn;
+                imgName = @"camera_flash_on";
+                break;
+            default:
+                //                device.torchMode = AVCaptureTorchModeAuto;
+                device.flashMode = AVCaptureFlashModeAuto;
+                imgName = @"camera_flash_auto";
+                break;
+        }
+        [self.flashButton setImage:[UIImage imageNamed:imgName] forState:UIControlStateNormal];
+        [device unlockForConfiguration];
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:@(flashMode) forKey:CameraFlashModeKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 
 /** 添加输入设备（前或后摄像头） */
 - (void)addVideoInputFrontCamera:(BOOL)front {
@@ -384,8 +388,7 @@ typedef enum{
 }
 
 #pragma -mark Observer
-- (void)setFocusObserver:(BOOL)yes
-{
+- (void)setFocusObserver:(BOOL)yes {
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     if (device && [device isFocusPointOfInterestSupported]) {
         if (yes) {
@@ -406,21 +409,29 @@ typedef enum{
             if (self.isManualFocus==NO) {
                 [self focusImageAnimateWithCenterPoint:CGPointMake(self.previewLayer.bounds.size.width/2, self.previewLayer.bounds.size.height/2)];
             }
-            NSLog(@"开始对焦");
-        }else{
-            NSLog(@"对焦结束");
         }
     }
 }
 
 #pragma mark - lazy
-- (AVCaptureSession *)session
-{
+- (AVCaptureSession *)session {
     if (_session == nil) {
         _session = [[AVCaptureSession alloc] init];
-        [_session setSessionPreset:AVCaptureSessionPresetPhoto];
+        [_session setSessionPreset:AVCaptureSessionPresetHigh];
     }
     return _session;
+}
+
+/** 创建一个队列，防止阻塞主线程 */
+- (dispatch_queue_t)sessionQueue {
+    if (!_sessionQueue) {
+        _sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
+    }
+    return _sessionQueue;
+}
+
+- (void)dealloc {
+    [self setFocusObserver:NO];
 }
 
 @end

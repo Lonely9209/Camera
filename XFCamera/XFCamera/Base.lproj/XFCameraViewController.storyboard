@@ -1,12 +1,47 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="7CM-FL-XpI">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--View Controller-->
+        <scene sceneID="XoY-I3-ki6">
+            <objects>
+                <viewController id="vtG-fC-44H" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fy1-qI-4q9"/>
+                        <viewControllerLayoutGuide type="bottom" id="ukL-UK-hsv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="2Dl-D4-Tn7">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WwD-eI-6Cn">
+                                <rect key="frame" x="149.5" y="318.5" width="76" height="30"/>
+                                <state key="normal" title="Take Photo"/>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="bBI-Xm-sEq"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="WwD-eI-6Cn" firstAttribute="centerX" secondItem="2Dl-D4-Tn7" secondAttribute="centerX" id="YhX-Oe-KVS"/>
+                            <constraint firstItem="WwD-eI-6Cn" firstAttribute="centerY" secondItem="2Dl-D4-Tn7" secondAttribute="centerY" id="Zm0-m9-hU2"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="j0t-ub-bO7"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rIY-Dz-bd3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-18" y="113"/>
+        </scene>
         <!--Camera View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -16,40 +51,43 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMq-yi-xKB">
+                                <rect key="frame" x="147.5" y="507" width="80" height="80"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="vMq-yi-xKB" secondAttribute="height" multiplier="131:104" id="1Np-ds-kIr"/>
+                                    <constraint firstAttribute="width" secondItem="vMq-yi-xKB" secondAttribute="height" id="1Np-ds-kIr"/>
                                     <constraint firstAttribute="height" constant="80" id="ApN-Ik-bds"/>
                                 </constraints>
-                                <state key="normal" image="icon_camera_snap_unselected"/>
+                                <state key="normal" image="camera_shutter"/>
                                 <connections>
                                     <action selector="takePhotoButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="izh-a0-ZiF"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JOp-qS-r8Z">
+                                <rect key="frame" x="127.5" y="607" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="JOp-qS-r8Z" secondAttribute="height" multiplier="1:1" id="JHh-4d-XzJ"/>
                                 </constraints>
-                                <state key="normal" image="zhxf_barcode_cancel_normal"/>
+                                <state key="normal" image="camera_back_arrow"/>
                                 <connections>
                                     <action selector="goBackButtonCLick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1Mo-46-Ash"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4cR-nC-vVS">
+                                <rect key="frame" x="207.5" y="607" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="54" id="kta-3g-S3W"/>
-                                    <constraint firstAttribute="height" constant="54" id="thx-43-eB8"/>
+                                    <constraint firstAttribute="width" secondItem="4cR-nC-vVS" secondAttribute="height" multiplier="1:1" id="3T0-m7-xpt"/>
+                                    <constraint firstAttribute="width" constant="40" id="NPO-aG-hnN"/>
                                 </constraints>
-                                <state key="normal" image="qb_scan_btn_flash_nor_"/>
+                                <state key="normal" image="camera_flash_auto"/>
                                 <connections>
                                     <action selector="flishLightButtonCLick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fUs-kB-e39"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.85376602560000003" green="0.85376602560000003" blue="0.85376602560000003" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="JOp-qS-r8Z" secondAttribute="bottom" constant="20" id="4OF-nR-Pxy"/>
                             <constraint firstItem="4cR-nC-vVS" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="40" id="CUv-q3-eYU"/>
@@ -60,15 +98,36 @@
                             <constraint firstItem="vMq-yi-xKB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="yR3-eK-C9L"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="flashButton" destination="4cR-nC-vVS" id="6OJ-52-aQC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="103" y="113"/>
+            <point key="canvasLocation" x="724" y="113"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Tiv-eO-Ncj">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7CM-FL-XpI" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="3rI-GN-YAs">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="vtG-fC-44H" kind="relationship" relationship="rootViewController" id="tvN-IV-vgl"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c2b-mo-ExL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-735.20000000000005" y="112.89355322338831"/>
         </scene>
     </scenes>
     <resources>
-        <image name="icon_camera_snap_unselected" width="208" height="208"/>
-        <image name="qb_scan_btn_flash_nor_" width="80" height="83"/>
-        <image name="zhxf_barcode_cancel_normal" width="54" height="54"/>
+        <image name="camera_back_arrow" width="58" height="58"/>
+        <image name="camera_flash_auto" width="58" height="58"/>
+        <image name="camera_shutter" width="100" height="100"/>
     </resources>
 </document>
